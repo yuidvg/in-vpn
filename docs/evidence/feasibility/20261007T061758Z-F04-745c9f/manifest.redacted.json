@@ -1,0 +1,31 @@
+{
+  "run_id": "20261007T061758Z-F04-745c9f",
+  "experiment": "F04-failure-containment",
+  "started_at": "2026-10-07T06:17:58.243053+00:00",
+  "source_sha256": {
+    "scripts/experiment": "772c89c1506ff4082fd9875a3741d89d88eea877fb98a8c28cdb713e584cd792",
+    "experiments/F00-platform/run.py": "43463bd6452ef7ada66e13023d4285c01928207caef26fb64db5c135a3b8b586",
+    "experiments/F02-process-lineage/run.py": "dfa6b316046342e263d007d341c4208d8c548bb46d4989a7d4e2a76057c2189f",
+    "experiments/F04-failure-containment/run.py": "9a0d8ef59ad40f7003d76f5782aee19255042131b11c5fef09844a5c2e5b5489",
+    "experiments/F00-platform/Sources/endpoint_security.c": "54b9fb134c0dd393e91217da6ca629cf3d00ec32ad4a64440c0697715321b034",
+    "experiments/F02-process-lineage/Sources/lineage.c": "7643464b9e1fe3f11993a8ace5e958c0dd683b1c141d788cad5de9a3df4fca03",
+    "experiments/F04-failure-containment/Sources/socket_probe.c": "cc0eba1183cf11d81bf2b3a1f90d043a6015a2324c4aa3f2d3defcf6704c7716",
+    "experiments/F00-platform/Sources/ProviderCompile.swift": "187cabe2a822ded8f0f2275d7f5ca5bd0fc37087b74c21b983d54e6fc5bcc66f"
+  },
+  "proxy_variables_removed": true,
+  "packet_capture": "not_attempted; receiver-side observations only",
+  "git": "not required; source snapshots and hashes retained",
+  "binary_sha256": {
+    "socket-probe": "fc82d7f49e789308c6ebca418d9a40f515183135337482c04d242a15dff3ba6d"
+  },
+  "execution": "executed",
+  "finished_at": "2026-10-07T06:17:59.677312+00:00",
+  "raw_data": ".local/runs/feasibility/20261007T061758Z-F04-745c9f",
+  "raw_artifact_sha256": {
+    "manifest.json": "7ab5aee06a825e40162175e7f75a35c7356767d155560c36ed33ef52abef935b",
+    "result.json": "38fa2a74eb593ea6388ba6eb4d9022348861c7b7718162f01c6a2d1f93722ca9",
+    "cleanup.json": "798aa519248cb7b2c47f8bd1a9b7c93200c0d8467f58d2b1c8072e97187b46f1",
+    "observations.json": "3c88e1b41b67384ae212940c45a6c4826d3210616bbbb424f8282a0ffee5026e",
+    "receiver.json": "84c84e6454197923a906ac23980247df1580c11746f00401b187fc582e5438c7"
+  }
+}

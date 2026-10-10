@@ -1,0 +1,251 @@
+#!/usr/bin/env python3
+"""Run Nix against a temporary, explicitly allowlisted CLI source tree.
+
+Examples: scripts/nix-package build
+          scripts/nix-package run -- --version
+          scripts/nix-package check
+          scripts/nix-package lock
+"""
+import argparse
+from contextlib import contextmanager
+import fnmatch
+import json
+import os
+from pathlib import Path
+import secrets
+import stat
+import subprocess
+import sys
+import tempfile
+
+
+class StagingError(ValueError):
+    """A source path cannot safely enter the Nix source tree."""
+
+
+@contextmanager
+def _directory(root_descriptor, parts, label):
+    opened = []
+    descriptor = root_descriptor
+    try:
+        for part in parts:
+            descriptor = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,
+                                 dir_fd=descriptor)
+            opened.append(descriptor)
+        yield descriptor
+    except OSError as error:
+        raise StagingError(f"Included directory is missing, a symlink, or unreadable: {label}") from error
+    finally:
+        for descriptor in reversed(opened):
+            os.close(descriptor)
+
+
+def _copy_regular(descriptor, name, destination, label, *, optional=False):
+    try:
+        attributes = os.stat(name, dir_fd=descriptor, follow_symlinks=False)
+    except FileNotFoundError:
+        if optional:
+            return False
+        raise StagingError(f"Required source file is missing: {label}") from None
+    if not stat.S_ISREG(attributes.st_mode):
+        raise StagingError(f"Included source must be a regular file, never a symlink: {label}")
+    try:
+        source_descriptor = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                                    dir_fd=descriptor)
+    except OSError as error:
+        raise StagingError(f"Included source cannot be opened safely: {label}") from error
+    try:
+        current = os.fstat(source_descriptor)
+        if (not stat.S_ISREG(current.st_mode) or
+                (current.st_dev, current.st_ino) != (attributes.st_dev, attributes.st_ino)):
+            raise StagingError(f"Included source changed during staging: {label}")
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        with destination.open("xb") as output:
+            while data := os.read(source_descriptor, 65536):
+                output.write(data)
+        destination.chmod(0o755 if current.st_mode & 0o111 else 0o644)
+    finally:
+        os.close(source_descriptor)
+    return True
+
+
+def stage_sources(source_root, destination, *, require_lock=True):
+    """Copy only approved direct files; return their sorted relative names.
+
+    Directory-descriptor traversal and O_NOFOLLOW prevent a source symlink
+    replacement from redirecting reads into secrets. Excluded paths, including
+    bin/invpn, are never opened. The destination must be a new or empty directory.
+    """
+    source_root, destination = Path(source_root), Path(destination)
+    if destination.is_symlink():
+        raise StagingError("Staging destination must not be a symlink")
+    destination.mkdir(mode=0o700, parents=True, exist_ok=True)
+    if any(destination.iterdir()):
+        raise StagingError("Staging destination must be empty")
+    destination.chmod(0o700)
+    try:
+        root_descriptor = os.open(source_root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    except OSError as error:
+        raise StagingError("Source root must be a readable real directory") from error
+    copied = []
+    try:
+        explicit = ("flake.nix", "flake.lock", "pyproject.toml", "LICENSE", "bin/in-vpn", "scripts/nix-package")
+        for relative in explicit:
+            path = Path(relative)
+            with _directory(root_descriptor, path.parts[:-1], str(path.parent)) as descriptor:
+                if _copy_regular(descriptor, path.name, destination / path, relative,
+                                 optional=relative == "flake.lock" and not require_lock):
+                    copied.append(relative)
+        for relative, pattern in (("packaging/nix", "*.nix"), ("src/invpn", "*.py"),
+                                  ("tests", "test_*.py")):
+            with _directory(root_descriptor, Path(relative).parts, relative) as descriptor:
+                for name in sorted(os.listdir(descriptor)):
+                    if fnmatch.fnmatchcase(name, pattern):
+                        path = f"{relative}/{name}"
+                        _copy_regular(descriptor, name, destination / path, path)
+                        copied.append(path)
+    finally:
+        os.close(root_descriptor)
+    return tuple(sorted(copied))
+
+
+def _lock_bytes(path):
+    descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    with os.fdopen(descriptor, "rb", closefd=True) as source:
+        if not stat.S_ISREG(os.fstat(source.fileno()).st_mode):
+            raise StagingError("Generated lock file must be a regular file")
+        data = source.read(4 * 1024 * 1024 + 1)
+    if len(data) > 4 * 1024 * 1024:
+        raise StagingError("Generated lock file exceeds the size limit")
+    try:
+        value = json.loads(data)
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise StagingError("Generated lock file is not valid JSON") from error
+    if (not isinstance(value, dict) or type(value.get("version")) is not int or value.get("version") != 7 or
+            not isinstance(value.get("nodes"), dict) or
+            not isinstance(value.get("root"), str) or
+            value["root"] not in value["nodes"] or
+            not all(isinstance(node, dict) for node in value["nodes"].values())):
+        raise StagingError("Generated lock file must use the Nix version-7 schema")
+    return data
+
+
+def replace_lock(source_root, generated_lock):
+    """Validate and atomically replace flake.lock without following its target."""
+    generated_lock = Path(generated_lock)
+    if generated_lock.is_symlink() or not generated_lock.is_file():
+        raise StagingError("Generated lock file must be a regular file")
+    data = _lock_bytes(generated_lock)
+    root_descriptor = os.open(source_root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    temporary = f".flake.lock-{secrets.token_hex(8)}"
+    try:
+        try:
+            existing = os.stat("flake.lock", dir_fd=root_descriptor, follow_symlinks=False)
+        except FileNotFoundError:
+            existing = None
+        if existing is not None and not stat.S_ISREG(existing.st_mode):
+            raise StagingError("Destination flake.lock must not be a symlink or special file")
+        descriptor = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                             0o644, dir_fd=root_descriptor)
+        try:
+            with os.fdopen(descriptor, "wb", closefd=True) as output:
+                output.write(data)
+                output.flush()
+                os.fsync(output.fileno())
+            os.replace(temporary, "flake.lock", src_dir_fd=root_descriptor, dst_dir_fd=root_descriptor)
+        finally:
+            try:
+                os.unlink(temporary, dir_fd=root_descriptor)
+            except FileNotFoundError:
+                pass
+    finally:
+        os.close(root_descriptor)
+
+
+def _temporary_parent(source_root):
+    source_root = Path(source_root).resolve()
+    for candidate in (Path(tempfile.gettempdir()), Path("/tmp"), Path("/var/tmp")):
+        resolved = candidate.resolve()
+        if not resolved.is_relative_to(source_root) and resolved.is_dir():
+            return candidate
+    raise StagingError("No temporary directory outside the repository is available")
+
+
+def nix_command(action, staged_root, arguments):
+    """Build an argv vector while preserving run's '--' program separator."""
+    arguments = list(arguments)
+    if action not in {"build", "run", "check", "lock"}:
+        raise StagingError("Unknown Nix operation")
+    if "--" in arguments:
+        if action != "run":
+            raise StagingError("The '--' program separator is available only for run")
+        options = arguments[:arguments.index("--")]
+    else:
+        options = arguments
+    # Extra installables or override-input URLs could make Nix ingest the
+    # private original workspace. Accept only known non-source-changing flags.
+    allowed = {"-L", "--print-build-logs", "--show-trace", "--offline", "--refresh"}
+    if action == "build":
+        allowed |= {"--print-out-paths", "--json", "--no-link"}
+    out_links = 0
+    index = 0
+    while index < len(options):
+        value = options[index]
+        if value in {"--out-link", "-o"} or value.startswith("--out-link="):
+            if action != "build":
+                raise StagingError("--out-link is available only for build")
+            out_links += 1
+            if out_links > 1:
+                raise StagingError("Specify --out-link only once")
+            if value in {"--out-link", "-o"}:
+                index += 1
+                if index >= len(options) or not options[index] or options[index].startswith("-"):
+                    raise StagingError("--out-link requires an output path")
+            elif not value.split("=", 1)[1]:
+                raise StagingError("--out-link requires an output path")
+        elif value not in allowed:
+            raise StagingError("Unsupported Nix argument: source-changing options and extra installables are refused")
+        index += 1
+    prefix = ["nix", "--extra-experimental-features", "nix-command flakes"]
+    flake = f"path:{Path(staged_root).resolve()}"
+    if action in {"build", "run"}:
+        default_link = ["--no-link"] if action == "build" and not out_links and "--no-link" not in options else []
+        return prefix + [action, "--no-write-lock-file"] + default_link + [f"{flake}#invpn"] + arguments
+    if action == "check":
+        return prefix + ["flake", "check", "--no-write-lock-file", flake] + arguments
+    if action == "lock":
+        return prefix + ["flake", "lock", flake] + arguments
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("action", choices=("build", "run", "check", "lock"))
+    parser.add_argument("nix_arguments", nargs=argparse.REMAINDER,
+                        help="Allowed: -L/--print-build-logs, --show-trace, --offline, --refresh; build also --print-out-paths, --json, --no-link, --out-link/-o PATH. Run program arguments follow '--'.")
+    raw_arguments = list(sys.argv[1:] if argv is None else argv)
+    arguments = parser.parse_args(raw_arguments)
+    # argparse treats the first '--' as its own option terminator even with
+    # REMAINDER. Preserve the raw tail so Nix still sees run's program boundary.
+    action_index = raw_arguments.index(arguments.action)
+    nix_arguments = raw_arguments[action_index + 1:]
+    source_root = Path(__file__).resolve().parents[1]
+    try:
+        with tempfile.TemporaryDirectory(prefix="invpn-nix-", dir=_temporary_parent(source_root)) as temporary:
+            stage = Path(temporary)
+            manifest = stage_sources(source_root, stage, require_lock=arguments.action != "lock")
+            print(f"Staged {len(manifest)} allowlisted source files outside the repository.", file=sys.stderr)
+            command = nix_command(arguments.action, stage, nix_arguments)
+            completed = subprocess.run(command, check=False)
+            if completed.returncode:
+                return completed.returncode
+            if arguments.action == "lock":
+                replace_lock(source_root, stage / "flake.lock")
+                print("Updated flake.lock from the validated staged result.", file=sys.stderr)
+            return 0
+    except (StagingError, OSError) as error:
+        print(f"nix-package: {error}", file=sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

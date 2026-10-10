@@ -1,0 +1,3 @@
+{"artifact": "observations.json", "data": []}
+{"artifact": "provider-events.json", "data": []}
+{"artifact": "cleanup.json", "data": {"probe_processes_exited": true, "configuration_absent": true, "extension_remains_installed": true}}

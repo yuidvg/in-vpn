@@ -1,0 +1,4 @@
+{"artifact": "cleanup.json", "data": {"configuration_absent": true, "owned_singbox_exited": true, "receiver_threads_exited": true}}
+{"artifact": "observations.json", "data": []}
+{"artifact": "provider-events.json", "data": []}
+{"artifact": "receivers.json", "data": [[{"proto": "tcp", "request": "GET /backend-preflight HTTP/1.0\r\n\r\n"}], [{"proto": "tcp", "request": "GET /backend-preflight HTTP/1.0\r\n\r\n"}, {"proto": "tcp", "request": "GET /pair-0-1 HTTP/1.1\r\nHost: 10.77.0.99:18080\r\nUser-Agent: curl/8.7.1\r\nAccept: */*\r\n\r\n"}]]}

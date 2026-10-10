@@ -1,0 +1,43 @@
+{
+  "run_id": "20261007T063056Z-F04-261b54",
+  "experiment": "F04-failure-containment",
+  "started_at": "2026-10-07T06:30:56.121839+00:00",
+  "source_sha256": {
+    "scripts/experiment": "0970876c3d4554dfac17185bba3c02d5b0b486198d6ff5fe80abf4b6de269158",
+    "experiments/F00-platform/Sources/ProviderCompile.swift": "187cabe2a822ded8f0f2275d7f5ca5bd0fc37087b74c21b983d54e6fc5bcc66f",
+    "experiments/F00-platform/Sources/endpoint_security.c": "54b9fb134c0dd393e91217da6ca629cf3d00ec32ad4a64440c0697715321b034",
+    "experiments/F00-platform/run.py": "43463bd6452ef7ada66e13023d4285c01928207caef26fb64db5c135a3b8b586",
+    "experiments/F01-flow-identity/run.py": "980eef0fe6822df83a9ca1504c9e34d70ddb74de09c2713bf8fe249c16e99b19",
+    "experiments/F02-process-lineage/Sources/lineage.c": "7643464b9e1fe3f11993a8ace5e958c0dd683b1c141d788cad5de9a3df4fca03",
+    "experiments/F02-process-lineage/run.py": "dfa6b316046342e263d007d341c4208d8c548bb46d4989a7d4e2a76057c2189f",
+    "experiments/F04-failure-containment/run.py": "610c6041f8e21a9d7b38a9daa9a2c1740143804a34c6073b9a3836ec26553234",
+    "experiments/F05-vpn-forwarding/run.py": "c5bcc9157cdb768c9009c43c6c00ab19829200c6d336a9cf3707fa681d159363",
+    "experiments/F06-workspace-compatibility/run.py": "e96a8d011085c3cdcbef66b1aaa12ec94eb00383ab8f6ff3bda77e9e9a02ce44",
+    "test-support/macos/Feasibility.xcodeproj/project.pbxproj": "63b855ccd2715d4e19adc7097b6d2d4011915bf9d3050319db093b5e878fdef0",
+    "test-support/macos/Host/Host.entitlements": "737aaf9b550828f8574024734f81746f58aecd73dc867c7c6e3e53dedb9e8468",
+    "test-support/macos/Host/Host.swift": "4972a17524613a86d88d4c04470fe77d5934fe5b54622e7073cdcbaab54fa8f5",
+    "test-support/macos/Host/Info.plist": "0328e5d7be6d84f8f4e8ab9ef8b99354bf8d207f7f7d8deaf06d200ec00e8e93",
+    "test-support/macos/Provider/Info.plist": "c15c067eca7b8d163f853dafb069140995e8af79bc9373b901652e477316e07f",
+    "test-support/macos/Provider/Provider.entitlements": "85b5fb70841e96e16f128c23279cb6750a017898299ae393e6db7140fe258c8a",
+    "test-support/macos/Provider/Provider.swift": "06bc39b4f8317101453d3c015a0100dfa157818e765eeb2f0916b5007ba85756",
+    "test-support/macos/Provider/main.swift": "c558ce196edfd509ef653e8e14cf454a8a61490d63c274694a8d082649996d80",
+    "test-support/macos/generate-project.py": "b9d3769c87c3db08886b8fbba82c3b40dbf1909f06ca113d3154063ce28606c4",
+    "test-support/probes/socket_probe.c": "c87829dfdf702680d89e12d050c6ae80bcff39a07a73b641fae8e241c947f90d"
+  },
+  "proxy_variables_removed": true,
+  "packet_capture": "not_attempted; receiver-side observations only",
+  "git": "not required; source snapshots and hashes retained",
+  "binary_sha256": {
+    "socket-probe": "674428720e4265f301ac3faad974e985a1ad7c8bedba6e6d9c9c0a0a0f6507af"
+  },
+  "execution": "executed",
+  "finished_at": "2026-10-07T06:30:57.544912+00:00",
+  "raw_data": ".local/runs/feasibility/20261007T063056Z-F04-261b54",
+  "raw_artifact_sha256": {
+    "manifest.json": "1000e8f0136c6591f957774ef96ece82c7b9477ff8af4b684b5d6898b9a660c5",
+    "result.json": "f418c8076fded718e81463fe6da6f6402f428769af12b05a44ff4233aab1b357",
+    "cleanup.json": "798aa519248cb7b2c47f8bd1a9b7c93200c0d8467f58d2b1c8072e97187b46f1",
+    "observations.json": "417ed066619d3dcb6412b8c1a39e24aa7dcc424db0e97d21783d9626950f4dd8",
+    "receiver.json": "c4549906eb9f45db3148aa9cfaddf60311af4f28f094734ea37a57c21eb759ac"
+  }
+}

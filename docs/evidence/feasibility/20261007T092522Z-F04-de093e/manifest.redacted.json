@@ -1,0 +1,77 @@
+{
+  "run_id": "20261007T092522Z-F04-de093e",
+  "experiment": "F04-failure-containment",
+  "started_at": "2026-10-07T09:25:22.293223+00:00",
+  "source_sha256": {
+    "scripts/experiment": "2631a64ff3c9f67a9d4cd237a81ecb6c15a94d9a9d76653d492999ac17adad25",
+    "experiments/F00-platform/Sources/ProviderCompile.swift": "187cabe2a822ded8f0f2275d7f5ca5bd0fc37087b74c21b983d54e6fc5bcc66f",
+    "experiments/F00-platform/Sources/endpoint_security.c": "54b9fb134c0dd393e91217da6ca629cf3d00ec32ad4a64440c0697715321b034",
+    "experiments/F00-platform/run.py": "43463bd6452ef7ada66e13023d4285c01928207caef26fb64db5c135a3b8b586",
+    "experiments/F01-flow-identity/run.py": "8e4d8ffcdb664100dc777494f7a6b6a4629740e36f7d51d741aa7e584b97456b",
+    "experiments/F02-process-lineage/Sources/lineage.c": "7643464b9e1fe3f11993a8ace5e958c0dd683b1c141d788cad5de9a3df4fca03",
+    "experiments/F02-process-lineage/Sources/session.c": "1ebcc5a981d9c9676757bd3eca028a02e7307937d4c13ab135f62c1830f79e43",
+    "experiments/F02-process-lineage/run.py": "ab7efac9234532b811f74f6ef01651bff58e9b690349b25a51cc0d75576cd179",
+    "experiments/F02-process-lineage/session.py": "0d941f1bfa06993cc2bbeb36d8ea3af39bc04d3ecddfb797cdebcaac41042cdc",
+    "experiments/F03-dns-attribution/run.py": "bee690aef045454985ec1035d922b521593211ff9f0661ad427961ccde7e46eb",
+    "experiments/F04-failure-containment/content_filter.py": "fa45010c73b1b167f4e67a206e371fb94849c953f8b0f2d4d8051873efd1b1d2",
+    "experiments/F04-failure-containment/provider_crash.py": "736af994d7064e81eb05e50b5b8e623a2d68ae897707a7e378a7fd5721691d49",
+    "experiments/F04-failure-containment/run.py": "8ec1e7944068b84e5e7d1eca56529dfdda0b3d4bafaae008c60876d246cbabe1",
+    "experiments/F05-vpn-forwarding/run.py": "544a2100ab31315a404143c46f33b311434e40d005e67fc3afb75e9186ba002b",
+    "experiments/F05-vpn-forwarding/transparent.py": "98ca7c4568d35e989558d0daa868d0e9e19dd859e529db25d808cb70e284863a",
+    "experiments/F06-workspace-compatibility/run.py": "e2a70b3608e7f6d35c3ad80dd99a10bdd7350e6b92bd39d4c46a0928c1b87b01",
+    "experiments/F07-multiple-vpns/run.py": "2616ec3c09b1bfe63d7b91d69febe4889ea6c4100b6a6f02be0c5fafef11f949",
+    "test-support/macos/Feasibility.xcodeproj/project.pbxproj": "9fdc6ef4a44acd0d23dae78b3ad41a0f96f68f426eb26958bf2aade9cfd53b46",
+    "test-support/macos/Guard/Guard.entitlements": "829324e436aa8286a4b7b5fb31b086d102b641957291509dc8c898e2d7c66067",
+    "test-support/macos/Guard/Guard.swift": "d36097101823f777bec008ad366719c4a05258e641ae0f7d9741148cccfdf756",
+    "test-support/macos/Guard/Info.plist": "a964480c018470044399ed58ad7d90270bd21e18f1d82242737b5f956ac393f7",
+    "test-support/macos/Guard/main.swift": "c558ce196edfd509ef653e8e14cf454a8a61490d63c274694a8d082649996d80",
+    "test-support/macos/Host/Host.entitlements": "1a064f81295689a20d7cf45a5e3268fd39067584cf6edd0afc79bbaef34bc33d",
+    "test-support/macos/Host/Host.swift": "8aa8e21b4bfd5e703eb3a86453bde62f828c57c8dabfcfe26a57fb04872e6ed9",
+    "test-support/macos/Host/Info.plist": "877fa2c48b16d68f37ab05f967922c7fa51165ad20ca4979c7b65b8843a2e74e",
+    "test-support/macos/Provider/Info.plist": "90eb92ea4989f530697b3eaff98b00eb7906441277480202388fd2c34b4c3e67",
+    "test-support/macos/Provider/Provider.entitlements": "f26ed4c8a4e496e91f19240af36944cb964d0a365d2cb381237a61631d409245",
+    "test-support/macos/Provider/Provider.swift": "5d50e8d766fbc51c571f98a94c1954da3362119beefd4fb213771d7211b4fe14",
+    "test-support/macos/Provider/Relay.swift": "29ab6d12e2927f48c649d2ea5a3c59daf2545cd2d995c68d9c18e0cb604797e9",
+    "test-support/macos/Provider/main.swift": "c558ce196edfd509ef653e8e14cf454a8a61490d63c274694a8d082649996d80",
+    "test-support/macos/generate-project.py": "2f166c4ad456f0bedb786fb3e7855f8149bef960db7543cb899206dc289b8648",
+    "test-support/network/fixtures.py": "9abbfa68b8245ccbc26e59ba15d752359ea6e71f36d8a5bcb670234f97cda74d",
+    "test-support/probes/dns_probe.c": "67cae941544708f301d09606d2b077582e8c703c3c0f58f69e1be46adbf7ec5c",
+    "test-support/probes/https_probe.c": "67e4e19e7bab016531ced945ee24b3f3259f8fde7000d66901f4325719196a7b",
+    "test-support/probes/socket_probe.c": "9590dab7eab6179890200def1627a2e768330b66fe327d45166610e2eecf86fe"
+  },
+  "proxy_variables_removed": true,
+  "packet_capture": "not_attempted; receiver-side observations only",
+  "git": "not required; source snapshots and hashes retained",
+  "experiment_parameters": {
+    "INVPN_F04_MODE": "content_filter"
+  },
+  "installed_probe": {
+    "version": "10",
+    "binary_sha256": {
+      "Contents/MacOS/InVPNFeasibility": "8f42d605c28ec16b954e01a375b3819aca62c6e341d0ba9374b6c29d8adff1e5",
+      "Contents/Library/SystemExtensions/jp.diverge.invpn.feasibility.guard.systemextension/Contents/MacOS/jp.diverge.invpn.feasibility.guard": "3006ae2a0d9b9a66438c6aa4e1f205e69c59c13d60f8c32ae967349e5632f711",
+      "Contents/Library/SystemExtensions/jp.diverge.invpn.feasibility.proxy.systemextension/Contents/MacOS/jp.diverge.invpn.feasibility.proxy": "d266213b618ce1ade36321d9e0948b5491957b86c7f4ec489286ff203b1c3c38"
+    }
+  },
+  "binary_sha256": {
+    "guard-http": "e9715096437c233401251a474613ddad0c4e54950d995087e8647d8436b213fe"
+  },
+  "execution": "executed",
+  "finished_at": "2026-10-07T09:25:38.422453+00:00",
+  "artifact_sha256": {
+    "cleanup.json": "e524b67a987486435efffe444c6afadd550e35edd30a9aecf1bf34e7acd9b576",
+    "commands.json": "b3b039de1662972806fcc169871a4f1089853a978db37fda2925c20d8ce60545",
+    "final-state.private.json": "8c840ba09f494887ca67aa55224c79f89e60191330855e0b3a5a74f27e9d2fe2",
+    "guard-after-crash.json": "3def85b97dd50ab29c0047f0343bdd4403ee77ef6ea9525e15c5fe08d0f20a85",
+    "guard-before-crash.json": "3fe661583bb3e400535873b09f0dcf1815736aec91956b609a9e53bf430422cc",
+    "guard-vpn-client.private.json": "c5f733ca19edb85208cbc79c8723d8d27b3bb211420a52feb055cd097a014a2d",
+    "guard-vpn-server.private.json": "bed1ca9806820d2f04b19f33ac48d9ca09c7580cf25bd70f926d3381b17047ce",
+    "manifest.json": "a9390b6ea5706925829abfdf1106ce25740a836bafd8513cf14bd74a690be936",
+    "normal-receiver.json": "156fe4c0d2bc6bd64ed5f5fe14679639ab02ed5ae4850ec2741ec4ca486f9f8e",
+    "observations.json": "0ee7c28fced8a7bcf06e68085de1b2cff7e890f5cb2812a4ab0726c9a869ba44",
+    "provider-events.json": "bbff1a92e120ddaf9b29bd3586dfaef32acdd309c9014d9d4162e6c123fcf120",
+    "result.json": "714d2fce188dbc07872ac43270d528b2a7a050d7edba94375cd20df97471c603",
+    "route-31452.private.json": "398b68cf873e2e2ac83aa096affbade99b7478249886977ec7a5eae3423cd1e8",
+    "vpn-receiver.json": "50220534bd6438ae7504c0e62571f85494c859053d31867397e8243d1fde3e65"
+  }
+}

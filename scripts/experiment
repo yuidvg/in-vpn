@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+"""Run bounded, local feasibility experiments; never install an extension implicitly."""
+import argparse
+import datetime
+import hashlib
+import importlib.util
+import json
+import os
+import plistlib
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import uuid
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class Run:
+    def __init__(self, experiment):
+        os.umask(0o077)
+        self.root = ROOT
+        self.id = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ') + '-' + experiment[:3] + '-' + uuid.uuid4().hex[:6]
+        self.path = ROOT / '.local/runs/feasibility' / self.id
+        self.path.mkdir(parents=True)
+        self.build = self.path / 'build'
+        self.build.mkdir()
+        self.env = {k: v for k, v in os.environ.items() if k.lower() not in {'http_proxy', 'https_proxy', 'all_proxy', 'no_proxy', 'ftp_proxy'} }
+        self.env['CLANG_MODULE_CACHE_PATH'] = str(ROOT / '.local/build/module-cache')
+        self.commands = []
+        sources = [ROOT / 'scripts/experiment'] + sorted(p for base in ['experiments', 'test-support'] for p in (ROOT / base).rglob('*') if p.is_file() and p.suffix in {'.py', '.c', '.swift', '.plist', '.entitlements', '.pbxproj'})
+        self.manifest = {'run_id': self.id, 'experiment': experiment, 'started_at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'source_sha256': {}, 'proxy_variables_removed': True, 'packet_capture': 'not_attempted; receiver-side observations only', 'git': 'not required; source snapshots and hashes retained'}
+        self.manifest['experiment_parameters'] = {k: self.env[k] for k in ['INVPN_F01_MODE', 'INVPN_F01_PAIRS', 'INVPN_F02_MODE', 'INVPN_F04_MODE', 'INVPN_F04_DESTINATION', 'INVPN_F05_MODE', 'INVPN_DNS_TTL'] if k in self.env}
+        app = Path('/Applications/InVPNFeasibility.app')
+        if app.exists():
+            self.manifest['installed_probe'] = {
+                'version': plistlib.loads((app / 'Contents/Info.plist').read_bytes()).get('CFBundleVersion'),
+                'binary_sha256': {str(p.relative_to(app)): hashlib.sha256(p.read_bytes()).hexdigest() for p in app.glob('Contents/**/MacOS/*') if p.is_file()},
+            }
+        for source in sources:
+            relative = source.relative_to(ROOT)
+            self.manifest['source_sha256'][str(relative)] = hashlib.sha256(source.read_bytes()).hexdigest()
+            snapshot = self.path / 'source' / relative
+            snapshot.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, snapshot)
+        self.save('manifest.json', self.manifest)
+
+    def save(self, name, value):
+        path = self.path / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + '\n')
+
+    def command(self, args, *, name=None, timeout=60, check=False, **kwargs):
+        argv = list(map(str, args))
+        try:
+            result = subprocess.run(argv, capture_output=True, text=True, env=self.env, timeout=timeout, **kwargs)
+        except subprocess.TimeoutExpired as error:
+            def decoded(value):
+                return value.decode(errors='replace') if isinstance(value, bytes) else value or ''
+            self.commands.append({'argv': argv, 'returncode': None, 'timeout_seconds': timeout, 'stdout': decoded(error.stdout), 'stderr': decoded(error.stderr)})
+            self.save('commands.json', self.commands)
+            raise
+        item = {'argv': list(map(str, args)), 'returncode': result.returncode, 'stdout': result.stdout, 'stderr': result.stderr}
+        self.commands.append(item)
+        self.save('commands.json', self.commands)
+        if name:
+            self.save(name, item)
+        if check and result.returncode:
+            raise RuntimeError(f'{args[0]} exited {result.returncode}; see commands.json')
+        return result
+
+    def compile_c(self, source, name, flags=()):
+        binary = self.build / name
+        self.command(['xcrun', 'clang', '-Wall', '-Wextra', '-O2', *flags, source, '-o', binary], check=True)
+        self.manifest.setdefault('binary_sha256', {})[name] = hashlib.sha256(binary.read_bytes()).hexdigest()
+        return binary
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('action', choices=['run', 'list'])
+    parser.add_argument('experiment', nargs='?')
+    args = parser.parse_args()
+    available = {p.parent.name: p for p in (ROOT / 'experiments').glob('*/run.py')}
+    if args.action == 'list':
+        print('\n'.join(sorted(available)))
+        return
+    if args.experiment not in available:
+        parser.error('implemented experiments: ' + ', '.join(sorted(available)))
+    run = Run(args.experiment)
+    print(run.path, flush=True)
+    try:
+        spec = importlib.util.spec_from_file_location('experiment_case', available[args.experiment])
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        result = module.execute(run)
+        run.save('result.json', result)
+        run.manifest['execution'] = 'executed'
+        print(json.dumps(result, indent=2, ensure_ascii=False))
+    except Exception as error:
+        run.manifest['execution'] = 'error'
+        run.manifest['error'] = repr(error)
+        raise
+    finally:
+        run.manifest['finished_at'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        run.save('manifest.json', run.manifest)
+
+
+if __name__ == '__main__':
+    main()

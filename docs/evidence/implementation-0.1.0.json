@@ -1,0 +1,244 @@
+{
+  "version": "0.1.0",
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "tests": {
+    "passed": 62,
+    "scope": "unit and components, includes local WireGuard DNS/HTTP"
+  },
+  "partial_cli": {
+    "run": ".local/runs/acceptance/20261009T131224Z-partial-caea42",
+    "results": [
+      {
+        "case": "proxy_https_domain_0",
+        "http_success": true,
+        "exit_differs_from_normal": true
+      },
+      {
+        "case": "proxy_https_domain_1",
+        "http_success": false,
+        "returncode": 35
+      },
+      {
+        "case": "proxy_https_domain_2",
+        "http_success": true,
+        "exit_differs_from_normal": true
+      },
+      {
+        "case": "workspace",
+        "passed": true
+      },
+      {
+        "case": "command_signal",
+        "passed": true
+      },
+      {
+        "case": "isolated_refusal",
+        "passed": true
+      },
+      {
+        "case": "proxy_ignored_socket",
+        "ordinary_socket_uses_normal_exit": true
+      },
+      {
+        "case": "interactive_shell_pty",
+        "passed": true
+      }
+    ],
+    "summary_sha256": "bc48be3feccb3d271811e31af9d9645398f32f015024e9abf8339939492e7470"
+  },
+  "parallel_local": {
+    "scope": "product CLI proxy mode; two independent actual local WireGuard peers; no external VPN exit, system DNS or crash containment claim",
+    "passed": true,
+    "error": null,
+    "pairs": 3,
+    "observed_requests": 6,
+    "results": [
+      {
+        "pair": 0,
+        "profile": "vpn1",
+        "cli_exit": 0,
+        "body_matches_profile": true,
+        "path": "/pair-0/vpn1/ee9060948317f45f",
+        "correct_receiver_requests": 1,
+        "other_receiver_requests": 0,
+        "paired_overlap": true
+      },
+      {
+        "pair": 0,
+        "profile": "vpn2",
+        "cli_exit": 0,
+        "body_matches_profile": true,
+        "path": "/pair-0/vpn2/f609189ac51a3229",
+        "correct_receiver_requests": 1,
+        "other_receiver_requests": 0,
+        "paired_overlap": true
+      },
+      {
+        "pair": 1,
+        "profile": "vpn1",
+        "cli_exit": 0,
+        "body_matches_profile": true,
+        "path": "/pair-1/vpn1/c00c66e64f01afc4",
+        "correct_receiver_requests": 1,
+        "other_receiver_requests": 0,
+        "paired_overlap": true
+      },
+      {
+        "pair": 1,
+        "profile": "vpn2",
+        "cli_exit": 0,
+        "body_matches_profile": true,
+        "path": "/pair-1/vpn2/6f60e5876d05ed65",
+        "correct_receiver_requests": 1,
+        "other_receiver_requests": 0,
+        "paired_overlap": true
+      },
+      {
+        "pair": 2,
+        "profile": "vpn1",
+        "cli_exit": 0,
+        "body_matches_profile": true,
+        "path": "/pair-2/vpn1/5350dd6d1e8f0b15",
+        "correct_receiver_requests": 1,
+        "other_receiver_requests": 0,
+        "paired_overlap": true
+      },
+      {
+        "pair": 2,
+        "profile": "vpn2",
+        "cli_exit": 0,
+        "body_matches_profile": true,
+        "path": "/pair-2/vpn2/6b2f4024983fb85b",
+        "correct_receiver_requests": 1,
+        "other_receiver_requests": 0,
+        "paired_overlap": true
+      }
+    ],
+    "receiver_requests": [
+      {
+        "receiver": "vpn1",
+        "path": "/pair-0/vpn1/ee9060948317f45f",
+        "arrived_at": 1791552027.039674,
+        "paired_overlap": true
+      },
+      {
+        "receiver": "vpn1",
+        "path": "/pair-1/vpn1/c00c66e64f01afc4",
+        "arrived_at": 1791552027.289313,
+        "paired_overlap": true
+      },
+      {
+        "receiver": "vpn1",
+        "path": "/pair-2/vpn1/5350dd6d1e8f0b15",
+        "arrived_at": 1791552027.549694,
+        "paired_overlap": true
+      },
+      {
+        "receiver": "vpn2",
+        "path": "/pair-0/vpn2/f609189ac51a3229",
+        "arrived_at": 1791552027.040054,
+        "paired_overlap": true
+      },
+      {
+        "receiver": "vpn2",
+        "path": "/pair-1/vpn2/6f60e5876d05ed65",
+        "arrived_at": 1791552027.2984908,
+        "paired_overlap": true
+      },
+      {
+        "receiver": "vpn2",
+        "path": "/pair-2/vpn2/6b2f4024983fb85b",
+        "arrived_at": 1791552027.5497239,
+        "paired_overlap": true
+      }
+    ],
+    "cleanup": {
+      "cli_processes_exited": true,
+      "peer_processes_exited": true,
+      "root_and_backend_pids_absent": true,
+      "all_sessions_finished": true,
+      "backend_secret_configs_removed": true,
+      "receiver_threads_stopped": true
+    },
+    "source_sha256": {
+      "bin/in-vpn": "15ea39cde7301dce075ef10fee5daac0b19d9cf2d2cc55aceaabb03d18ca6afb",
+      "verification/parallel-local.py": "490d511340496d45f5454984490d903f124d38f221e0ae1aeb3d42d8de298fe7",
+      "src/invpn/__init__.py": "5744c0134f46c1e270bba8c4cde5ee290ed3e4f79710326d70896f16d6114bcc",
+      "src/invpn/bridge.py": "588aa9eca112e5899077ac94e7f2d6c7103909eb94285971782e9deaf9a1d81f",
+      "src/invpn/capabilities.py": "d2433d6bce2ca8577e078357867e6496cd960e77d1354c90265808d5542f52b5",
+      "src/invpn/cli.py": "2691a0919b5d3de4e4bd34b700cc88a5b95d7f8f0761a480ba4dfb007219c747",
+      "src/invpn/launch_gate.py": "7e1d3496b431714011af6497e13603e35e399f94bef8021d9295aa657cd9215c",
+      "src/invpn/launcher.py": "702b543af5291d1116b8988aaecd17f4b00cdffbf1f501b280c088680136ce10",
+      "src/invpn/lifecycle.py": "e65861eed0434fd8c32ea7b7559fca7b009bbf768c242bd2f22798a42c741581",
+      "src/invpn/native.py": "6fa5982fd94ac308ad2db0057a7d1a4b9033cc6e9b5d1dfba467c0e3953bcb28",
+      "src/invpn/profiles.py": "858482122759b794d44faa69cefb13b86b9180ab0b6fc63d6516a283d200cd41",
+      "src/invpn/transport.py": "f4433c41595e3b4ec8abb9be773b558b906fdaeca15cd1442c5f93f99183eb96"
+    }
+  },
+  "dns_external_additional": {
+    "raw_evidence": ".local/product/checks/dns-engine-1791551309-58e5de/observations.private.json",
+    "sha256": "da4f91fe851b28742a11771a333a99ec4764098ce650b9c8711a16f40650d87c",
+    "https_successes": 6,
+    "https_attempts": 6,
+    "explicit_dns_timeouts_observed": true
+  },
+  "pty_jobs": {
+    "wrapper_stopped_with_root": true,
+    "exit_code": 17,
+    "ctrl_z_fg_ctrl_c": true,
+    "root_resume": true
+  },
+  "pty_bg": {
+    "bg_retains_outer_tty": true,
+    "fg_hands_tty_to_root": true,
+    "outer_shell_usable_after_bg": true,
+    "ctrl_c_returns_outer_shell": true,
+    "outer_exit": 0
+  },
+  "native": {
+    "version": "0.1.0/2",
+    "signed_build": true,
+    "extension_enabled": false,
+    "configuration_present": false,
+    "runtime_forwarding_verified": false
+  },
+  "limitations": [
+    "not full V00-V25 acceptance",
+    "second external VPN not supplied",
+    "system DNS isolation absent",
+    "direct traffic blocking absent",
+    "native user approval pending"
+  ],
+  "final_source_sha256": {
+    "src/invpn/launch_gate.py": "7e1d3496b431714011af6497e13603e35e399f94bef8021d9295aa657cd9215c",
+    "src/invpn/transport.py": "f4433c41595e3b4ec8abb9be773b558b906fdaeca15cd1442c5f93f99183eb96",
+    "src/invpn/bridge.py": "588aa9eca112e5899077ac94e7f2d6c7103909eb94285971782e9deaf9a1d81f",
+    "src/invpn/__init__.py": "5744c0134f46c1e270bba8c4cde5ee290ed3e4f79710326d70896f16d6114bcc",
+    "src/invpn/native.py": "6fa5982fd94ac308ad2db0057a7d1a4b9033cc6e9b5d1dfba467c0e3953bcb28",
+    "src/invpn/cli.py": "2691a0919b5d3de4e4bd34b700cc88a5b95d7f8f0761a480ba4dfb007219c747",
+    "src/invpn/capabilities.py": "0efd56b6f19ba50367fb4e071180b1285a95a0f3c19f8b23d4892b6204015d52",
+    "src/invpn/lifecycle.py": "e65861eed0434fd8c32ea7b7559fca7b009bbf768c242bd2f22798a42c741581",
+    "src/invpn/launcher.py": "68b196bd30202a6ee881011b8a41155673bd9df8330be7a99d315f53cfbe10ab",
+    "src/invpn/profiles.py": "858482122759b794d44faa69cefb13b86b9180ab0b6fc63d6516a283d200cd41",
+    "macos/build.py": "4e6457a26581dfad3861d386f0969885103f8a3ea1228dd6dc685a2275d5854e",
+    "macos/Host/Host.entitlements": "26a4bfc38d8ee3294055c051fb154894d383ce878a0d0d2b6678bf058f7c342e",
+    "macos/Host/Host.swift": "8a25c95feb0148c7fb7891ab09649eb7091f8bfbfc249b5f2c65b6c473b3247a",
+    "macos/Host/Info.plist": "b2a237581a2475b741f0746532411d7c882e5f5639e81876ca2403bac46f9f95",
+    "macos/Provider/Provider.swift": "f388942abe9426b2e0fda4d7d9cb919c83a837505929103ef0f693049496ad40",
+    "macos/Provider/Provider.entitlements": "7062b3235e97df2f43148d62d328310654d70ca7055786bb44bddef66bc9e760",
+    "macos/Provider/main.swift": "9f62f7476be41b014d8a649ce6585db335ec1d34061d89b19e2027266ddf20d4",
+    "macos/Provider/Relay.swift": "8313ef45dd4a45c979015031e7a1f4a93ca2d3e5bd809a9f666538e0bfbc267e",
+    "macos/Provider/Info.plist": "be3f166c3dae78c061891ce44193610ef3ad28828af9242f33a477287247f2c6",
+    "macos/Shared/ProcessIdentity.h": "cfc880e28d6347ec787bb857e406a57f1cfd25bc37407aa545eca848d334ed11",
+    "macos/Shared/Model.swift": "02e5eb68e847e95d9adb12ba559051a5a90ce69fe6fa6291eb39c875f699b4da",
+    "macos/Shared/ProcessIdentity.c": "576ef8dedc50dc57cb269343b0983fd7959ccdb18c078c3d70c0f41485318f40",
+    "verification/parallel-local.py": "490d511340496d45f5454984490d903f124d38f221e0ae1aeb3d42d8de298fe7",
+    "verification/run-partial.py": "3f51db4165c5de5b5acc7da38166f0362e778744374c12703e89253648ccfee6"
+  },
+  "final_cleanup": {
+    "owned_sing_box_processes": 0,
+    "backend_configs_remaining": 0,
+    "native_configuration_present": false,
+    "tailscale_modified": false
+  }
+}

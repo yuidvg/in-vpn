@@ -1,0 +1,27 @@
+{
+  "run_id": "20261007T061641Z-F02-66b535",
+  "experiment": "F02-process-lineage",
+  "started_at": "2026-10-07T06:16:41.457420+00:00",
+  "source_sha256": {
+    "scripts/experiment": "772c89c1506ff4082fd9875a3741d89d88eea877fb98a8c28cdb713e584cd792",
+    "experiments/F00-platform/run.py": "43463bd6452ef7ada66e13023d4285c01928207caef26fb64db5c135a3b8b586",
+    "experiments/F02-process-lineage/run.py": "dfa6b316046342e263d007d341c4208d8c548bb46d4989a7d4e2a76057c2189f",
+    "experiments/F00-platform/Sources/endpoint_security.c": "54b9fb134c0dd393e91217da6ca629cf3d00ec32ad4a64440c0697715321b034",
+    "experiments/F02-process-lineage/Sources/lineage.c": "7643464b9e1fe3f11993a8ace5e958c0dd683b1c141d788cad5de9a3df4fca03",
+    "experiments/F00-platform/Sources/ProviderCompile.swift": "187cabe2a822ded8f0f2275d7f5ca5bd0fc37087b74c21b983d54e6fc5bcc66f"
+  },
+  "proxy_variables_removed": true,
+  "packet_capture": "not_attempted; receiver-side observations only",
+  "git": "not required; source snapshots and hashes retained",
+  "binary_sha256": {
+    "lineage": "422cc689460ed65144f41140705049fd5058e8deab9ebfd811d5e2008dea6b87"
+  },
+  "execution": "executed",
+  "finished_at": "2026-10-07T06:16:43.635131+00:00",
+  "raw_data": ".local/runs/feasibility/20261007T061641Z-F02-66b535",
+  "raw_artifact_sha256": {
+    "manifest.json": "6232e84d96d2982a3027eb03424c9ce6bdac491c59938c10abe2d20288261104",
+    "result.json": "c20545540e80bd621c81b8a4285d3d87af38cf776f1826adbc70f939efd0883a",
+    "cleanup.json": "be564bb7587d119a27d2857ed447718129a27a5577cc48f92b5e2205365c635a"
+  }
+}

@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "invpn"
+version = "0.1.0"
+description = "Explicit partial VPN execution modes for macOS"
+requires-python = ">=3.11"
+dependencies = []
+license = "MIT"
+license-files = ["LICENSE"]
+
+[project.urls]
+Homepage = "https://github.com/yuidvg/in-vpn"
+Repository = "https://github.com/yuidvg/in-vpn"
+
+[project.scripts]
+in-vpn = "invpn.cli:main"
+invpn = "invpn.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

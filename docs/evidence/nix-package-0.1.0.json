@@ -1,0 +1,226 @@
+{
+  "scope": "CLI packaging; no complete VPN isolation claims",
+  "date": "2026-10-10",
+  "platform": "aarch64-darwin",
+  "macos": "27.0.1",
+  "nix_version": "2.34.8",
+  "published": false,
+  "license_selected": false,
+  "build": {
+    "drvPath": "/nix/store/ydqw1w4hk8hkrbxiydr0mgkdv3hdayvv-invpn-0.1.0.drv",
+    "outputs": {
+      "out": "/nix/store/5d9j3wagklv1hcidl4lz5961hi3lf6gx-invpn-0.1.0"
+    }
+  },
+  "checks": {
+    "build_tests": 51,
+    "host_tests": 77,
+    "host_tests_skipped": 0,
+    "flake_check_passed": true,
+    "helper_run_version": "0.1.0",
+    "helper_lock_passed": true
+  },
+  "installed_cli": {
+    "scope": "installed CLI packaging; no VPN reachability or isolation claims",
+    "checked_at": "2026-10-10T10:08:27.381126+00:00",
+    "package": "/nix/store/5d9j3wagklv1hcidl4lz5961hi3lf6gx-invpn-0.1.0",
+    "checks": [
+      {
+        "case": "macos_host",
+        "passed": true
+      },
+      {
+        "case": "package_path",
+        "passed": true
+      },
+      {
+        "case": "both_aliases_installed",
+        "passed": true
+      },
+      {
+        "case": "installed_launch_gate",
+        "passed": true
+      },
+      {
+        "case": "version_in-vpn",
+        "passed": true
+      },
+      {
+        "case": "version_invpn",
+        "passed": true
+      },
+      {
+        "case": "aliases_same_version",
+        "passed": true
+      },
+      {
+        "case": "capabilities_command",
+        "passed": true
+      },
+      {
+        "case": "capabilities_honest_partial",
+        "passed": true
+      },
+      {
+        "case": "default_refuses_before_execution",
+        "passed": true
+      },
+      {
+        "case": "doctor_command",
+        "passed": true
+      },
+      {
+        "case": "pinned_backend_without_path",
+        "passed": true
+      },
+      {
+        "case": "single_session_state",
+        "passed": true
+      },
+      {
+        "case": "private_backend_config_removed",
+        "passed": true
+      },
+      {
+        "case": "owned_backend_exited",
+        "passed": true
+      },
+      {
+        "case": "proxy_child_exit17",
+        "passed": true
+      },
+      {
+        "case": "session_finished_exit17",
+        "passed": true
+      },
+      {
+        "case": "child_observation_written",
+        "passed": true
+      },
+      {
+        "case": "child_environment_preserved",
+        "passed": true
+      },
+      {
+        "case": "cwd_and_relative_file_preserved",
+        "passed": true
+      },
+      {
+        "case": "arguments_preserved",
+        "passed": true
+      },
+      {
+        "case": "private_state_and_log",
+        "passed": true
+      }
+    ],
+    "version": "0.1.0",
+    "backend": "/nix/store/xbqvcb469sc20r6qixi41h6qf4mn3hjx-sing-box-1.14.1/bin/sing-box",
+    "backend_version": "sing-box version 1.14.1",
+    "passed": true,
+    "total_checks": 22,
+    "passed_checks": 22
+  },
+  "source_audit": {
+    "passed": true,
+    "allowlisted_file_count": 24,
+    "allowlisted_files": [
+      "bin/in-vpn",
+      "flake.lock",
+      "flake.nix",
+      "packaging/nix/package.nix",
+      "pyproject.toml",
+      "scripts/nix-package",
+      "src/invpn/__init__.py",
+      "src/invpn/bridge.py",
+      "src/invpn/capabilities.py",
+      "src/invpn/cli.py",
+      "src/invpn/launch_gate.py",
+      "src/invpn/launcher.py",
+      "src/invpn/lifecycle.py",
+      "src/invpn/native.py",
+      "src/invpn/profiles.py",
+      "src/invpn/transport.py",
+      "tests/test_backend_selection.py",
+      "tests/test_bridge.py",
+      "tests/test_contract.py",
+      "tests/test_launcher.py",
+      "tests/test_lifecycle.py",
+      "tests/test_nix_source.py",
+      "tests/test_profiles.py",
+      "tests/test_transport.py"
+    ],
+    "scans": {
+      "flake_source": {
+        "path": "/nix/store/hsldih71sgrfz2znffxnqyr69is074s4-source",
+        "file_count": 24,
+        "local_wireguard_secret_present": false,
+        "private_artifact_present": false
+      },
+      "package_source": {
+        "path": "/nix/store/576x3vkh6gr7r1k6mrl8jdll1hy41pr6-source",
+        "file_count": 21,
+        "local_wireguard_secret_present": false,
+        "private_artifact_present": false
+      },
+      "package_output": {
+        "path": "/nix/store/5d9j3wagklv1hcidl4lz5961hi3lf6gx-invpn-0.1.0",
+        "file_count": 38,
+        "local_wireguard_secret_present": false,
+        "private_artifact_present": false
+      }
+    },
+    "source_sha256": {
+      "bin/in-vpn": "15ea39cde7301dce075ef10fee5daac0b19d9cf2d2cc55aceaabb03d18ca6afb",
+      "flake.lock": "1349165bc99a97c543919af93a23a3c9679015f6c72969231c4caad0c5222364",
+      "flake.nix": "fe248fb666ec29914380bf99fdde325aeb364a7d3b58e55d839d08fc03fd57e2",
+      "packaging/nix/package.nix": "4177d51ab5b9cead26c9ced1417886b1162260fcae5840a05565ec664092f948",
+      "pyproject.toml": "7cab5f8fbdc3ba5ab7774aa4dc73598008ff3ea6cc939bd65ab1af846f698087",
+      "scripts/nix-package": "81e73a9aa245370784e5b45a784f67fb184c64c5b397d58a8f2df906ac07b663",
+      "src/invpn/__init__.py": "5744c0134f46c1e270bba8c4cde5ee290ed3e4f79710326d70896f16d6114bcc",
+      "src/invpn/bridge.py": "588aa9eca112e5899077ac94e7f2d6c7103909eb94285971782e9deaf9a1d81f",
+      "src/invpn/capabilities.py": "0efd56b6f19ba50367fb4e071180b1285a95a0f3c19f8b23d4892b6204015d52",
+      "src/invpn/cli.py": "7bd86b0bb275cdea45b4ae9b42d36b0a9fd5defba2debba1c08c81fde36bdb8f",
+      "src/invpn/launch_gate.py": "7e1d3496b431714011af6497e13603e35e399f94bef8021d9295aa657cd9215c",
+      "src/invpn/launcher.py": "68b196bd30202a6ee881011b8a41155673bd9df8330be7a99d315f53cfbe10ab",
+      "src/invpn/lifecycle.py": "e65861eed0434fd8c32ea7b7559fca7b009bbf768c242bd2f22798a42c741581",
+      "src/invpn/native.py": "6fa5982fd94ac308ad2db0057a7d1a4b9033cc6e9b5d1dfba467c0e3953bcb28",
+      "src/invpn/profiles.py": "858482122759b794d44faa69cefb13b86b9180ab0b6fc63d6516a283d200cd41",
+      "src/invpn/transport.py": "f4433c41595e3b4ec8abb9be773b558b906fdaeca15cd1442c5f93f99183eb96",
+      "tests/test_backend_selection.py": "078d42b2303ef90762e779d2adf07ac1f581ace65e00aceab5d54957db0cd074",
+      "tests/test_bridge.py": "f1fb7b15d2c51138498d20d1124db32a5968639b4830845ef47fcb954908374f",
+      "tests/test_contract.py": "5f6dc6e75965361215accf009a5ba78097b0772a36d02fd0ecee1181113aa899",
+      "tests/test_launcher.py": "5902fe65f2879103501f28da4b2efbb5fd8dc4cf7b7cd2f376d48758bf44ba0b",
+      "tests/test_lifecycle.py": "7cdf0448b7e8aeec8fd1cac51176f53cd058cda6af4185348d550acac2d78a43",
+      "tests/test_nix_source.py": "3c51dd360ea366ac4bbb8f65dba88a04f1456fae73c34b42d5c24e04bc93c944",
+      "tests/test_profiles.py": "0a44e35f9a46bb65c8e067ba53b5568326dd1fbe9c02129c33e241c015627621",
+      "tests/test_transport.py": "fb6e6a415750a27c0aea8b620399c824aa30055be8e7c3bd700e19bc2e84031e"
+    }
+  },
+  "raw_logs": {
+    "build.json.latest": {
+      "local_path": ".local/runs/packaging/nix-0.1.0/build.json.latest",
+      "sha256": "eb4bdc8b7a47eba3ccf5da80939500ef4f96d4eacdb77300e6ccf1199c19e5e6"
+    },
+    "build-final-full.log": {
+      "local_path": ".local/runs/packaging/nix-0.1.0/build-final-full.log",
+      "sha256": "d12cfc5b1052dd5c3ea234a950de4bdda4db1068cbb2ca44d8d1054a99e557cc"
+    },
+    "flake-check-final.log": {
+      "local_path": ".local/runs/packaging/nix-0.1.0/flake-check-final.log",
+      "sha256": "feb1a68bc6be9b70d6aea9c65ce77ee62e00f3a8a4332370d06e6f618ca7922b"
+    },
+    "unit-tests-final.log": {
+      "local_path": ".local/runs/packaging/nix-0.1.0/unit-tests-final.log",
+      "sha256": "40f6aa93f5ecacf4114767a206467cfa68f5c79bff930b9042001f79cae9f48a"
+    },
+    "smoke-release-candidate.json": {
+      "local_path": ".local/runs/packaging/nix-0.1.0/smoke-release-candidate.json",
+      "sha256": "d47f7c184e806fd68f396f3277ded3ceb8dcd73844d42a2805f4eb645c50dc7f"
+    },
+    "source-audit.json": {
+      "local_path": ".local/runs/packaging/nix-0.1.0/source-audit.json",
+      "sha256": "c5251f1e89ddfa74079398944308f2b9b854d6c2bd25b245155a2af478bde15f"
+    }
+  }
+}

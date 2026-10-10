@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+"""Publish explicitly selected run evidence, excluding credentials and raw tokens."""
+import argparse
+import base64
+import hashlib
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+ALLOWED = {'bridge-summary.json', 'result.json', 'observations.json', 'provider-events.json', 'receivers.json', 'receiver.json', 'cleanup.json', 'crash.json', 'reference-attempts.json', 'guard-before-crash.json', 'guard-after-crash.json', 'normal-receiver.json', 'vpn-receiver.json'}
+
+
+def clean(value):
+    if isinstance(value, dict):
+        result = {}
+        for key, item in value.items():
+            if key == 'token':
+                token = base64.b64decode(item) if item else b''
+                result['audit_token'] = {'present': bool(token), 'bytes': len(token), 'sha256': hashlib.sha256(token).hexdigest() if token else None}
+            elif key in {'private_key', 'PrivateKey', 'PresharedKey', 'pre_shared_key', 'password', 'secret'}:
+                raise ValueError('Secret-bearing input must not be published')
+            else: result[key] = clean(item)
+        return result
+    if isinstance(value, list): return [clean(item) for item in value]
+    if isinstance(value, str): return value.replace(str(ROOT), '<workspace>').replace(str(Path.home()), '<home>')
+    return value
+
+
+def publish(run_id):
+    if Path(run_id).name != run_id: raise ValueError('run id required')
+    source = ROOT / '.local/runs/feasibility' / run_id
+    manifest = json.loads((source / 'manifest.json').read_text())
+    if not manifest.get('finished_at'): raise ValueError('run has not completed')
+    target = ROOT / 'docs/evidence/feasibility' / run_id
+    target.mkdir(parents=True, exist_ok=True)
+    # Private data stays local; its hash allows later comparison without disclosure.
+    artifacts = {str(p.relative_to(source)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(source.glob('*.json'))}
+    manifest['artifact_sha256'] = artifacts
+    (target / 'manifest.redacted.json').write_text(json.dumps(clean(manifest), indent=2, ensure_ascii=False)+'\n')
+    records = [{'artifact': name, 'data': clean(json.loads((source/name).read_text()))} for name in sorted(ALLOWED) if (source/name).exists()]
+    (target / 'observations.redacted.jsonl').write_text(''.join(json.dumps(record, ensure_ascii=False)+'\n' for record in records))
+    (target / 'report.md').write_text(f'''# {run_id}
+
+実験: `{manifest['experiment']}`。ハーネス実行状態: `{manifest['execution']}`（機能の合格とは別）。
+
+実験の条件・判定は [report-2.md](../../../report-2.md) に記載。
+[実行情報・ソース／成果物ハッシュ](manifest.redacted.json) と [秘匿処理後の観測](observations.redacted.jsonl) を保存した。
+生データ・ソース保存版・秘密設定は `.local/runs/feasibility/{run_id}/` に保持する。
+''')
+    print(run_id)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(); parser.add_argument('run_ids', nargs='+')
+    for run_id in parser.parse_args().run_ids: publish(run_id)

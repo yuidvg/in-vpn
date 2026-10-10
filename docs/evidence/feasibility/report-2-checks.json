@@ -1,0 +1,12 @@
+{
+  "external_transparent_pairs_correct": 3,
+  "proxy_crash_direct_https_successes_of_10": 8,
+  "two_local_wireguard_tcp_udp_receivers_correct": true,
+  "dns_cross_session_counterexample_reproduced": true,
+  "session_id_successes": 201,
+  "setsid_counterexample": true,
+  "independent_filter_crash_10_of_10_leaks_reproduced": true,
+  "completed_runs_with_source_hashes_verified": 17,
+  "public_secret_scan_passed": true,
+  "python_markdown_checks_passed": true
+}

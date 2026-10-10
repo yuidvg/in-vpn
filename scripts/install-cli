@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+"""Install this CLI for the current user; never copies profiles or macOS apps."""
+import argparse
+import json
+from pathlib import Path
+import shutil
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--prefix", type=Path, default=Path.home() / ".local")
+    args = parser.parse_args()
+    if sys.version_info < (3, 11):
+        parser.error("Python 3.11 or newer is required")
+    prefix = args.prefix.expanduser().absolute()
+    install = prefix / "share/invpn"
+    marker = install / "installation.json"
+    if install.exists() and (install.is_symlink() or not marker.is_file() or json.loads(marker.read_text()).get("project") != "invpn"):
+        parser.error("installation directory exists and is not owned by this installer")
+    aliases = [prefix / "bin" / name for name in ("in-vpn", "invpn")]
+    for alias in aliases:
+        if alias.exists() or alias.is_symlink():
+            if not alias.is_symlink() or alias.resolve() != (install / "bin/in-vpn").resolve():
+                parser.error(f"refusing to replace existing command: {alias}")
+    (install / "bin").mkdir(parents=True, exist_ok=True)
+    (install / "src").mkdir(exist_ok=True)
+    shutil.copytree(ROOT / "src/invpn", install / "src/invpn", dirs_exist_ok=True,
+                    ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    shutil.copy2(ROOT / "bin/in-vpn", install / "bin/in-vpn")
+    (prefix / "bin").mkdir(parents=True, exist_ok=True)
+    for alias in aliases:
+        if not alias.is_symlink():
+            alias.symlink_to(install / "bin/in-vpn")
+    marker.write_text(json.dumps({"project": "invpn", "version": "0.1.0"}) + "\n")
+    print(f"Installed: {aliases[0]} (also invpn)")
+    print(f"Use Python 3.11+ and add {prefix / 'bin'} to PATH if necessary.")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,4 @@
+{"artifact": "bridge-summary.json", "data": []}
+{"artifact": "cleanup.json", "data": {"configuration_absent": true, "owned_backend_exited": true, "clients_exited": true}}
+{"artifact": "observations.json", "data": [{"case": "before_provider_normal", "pid": 27280, "returncode": 0, "valid_ip_response": true, "matches_expected_exit": null}]}
+{"artifact": "provider-events.json", "data": []}

@@ -1,0 +1,3 @@
+{"artifact": "observations.json", "data": [{"iteration": 0, "process": "A", "launcher_pid": 15147, "returncode": 0, "stdout": "", "stderr": ""}, {"iteration": 0, "process": "B", "launcher_pid": 15148, "returncode": 0, "stdout": "", "stderr": ""}]}
+{"artifact": "provider-events.json", "data": [{"iteration": 0, "events": []}]}
+{"artifact": "cleanup.json", "data": {"probe_processes_exited": true, "configuration_removed": false, "extension_remains_installed": true}}

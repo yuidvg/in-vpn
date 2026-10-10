@@ -1,0 +1,56 @@
+{
+  "run_id": "20261007T071122Z-F04-cc5ae6",
+  "experiment": "F04-failure-containment",
+  "started_at": "2026-10-07T07:11:22.400138+00:00",
+  "source_sha256": {
+    "scripts/experiment": "97f98ccca91093d929b6088ded01f77a83b691620f2b8ded7efc7b05aef3e90a",
+    "experiments/F00-platform/Sources/ProviderCompile.swift": "187cabe2a822ded8f0f2275d7f5ca5bd0fc37087b74c21b983d54e6fc5bcc66f",
+    "experiments/F00-platform/Sources/endpoint_security.c": "54b9fb134c0dd393e91217da6ca629cf3d00ec32ad4a64440c0697715321b034",
+    "experiments/F00-platform/run.py": "43463bd6452ef7ada66e13023d4285c01928207caef26fb64db5c135a3b8b586",
+    "experiments/F01-flow-identity/run.py": "8e4d8ffcdb664100dc777494f7a6b6a4629740e36f7d51d741aa7e584b97456b",
+    "experiments/F02-process-lineage/Sources/lineage.c": "7643464b9e1fe3f11993a8ace5e958c0dd683b1c141d788cad5de9a3df4fca03",
+    "experiments/F02-process-lineage/run.py": "dfa6b316046342e263d007d341c4208d8c548bb46d4989a7d4e2a76057c2189f",
+    "experiments/F03-dns-attribution/run.py": "bee690aef045454985ec1035d922b521593211ff9f0661ad427961ccde7e46eb",
+    "experiments/F04-failure-containment/provider_crash.py": "2a532cf290979a51d4028672a4c1c6bee22728edaf38e4af694b47af90f44006",
+    "experiments/F04-failure-containment/run.py": "ec39ba5b780d3928c99871d4938ebf0c2ec7a5076e6c723bb0cecea84b50bf47",
+    "experiments/F05-vpn-forwarding/run.py": "c5bcc9157cdb768c9009c43c6c00ab19829200c6d336a9cf3707fa681d159363",
+    "experiments/F06-workspace-compatibility/run.py": "e2a70b3608e7f6d35c3ad80dd99a10bdd7350e6b92bd39d4c46a0928c1b87b01",
+    "test-support/macos/Feasibility.xcodeproj/project.pbxproj": "63b855ccd2715d4e19adc7097b6d2d4011915bf9d3050319db093b5e878fdef0",
+    "test-support/macos/Host/Host.entitlements": "737aaf9b550828f8574024734f81746f58aecd73dc867c7c6e3e53dedb9e8468",
+    "test-support/macos/Host/Host.swift": "6d7faaac3e51b11f1bf4775f6a70b1fd788111b0d5f8c96fdb1837997bc6f232",
+    "test-support/macos/Host/Info.plist": "2b71325995112acd680a0cde718db38905bc01034ae926affefcff2d231fd801",
+    "test-support/macos/Provider/Info.plist": "9bfe9a5cd2a9335b6cd06887cd0d2e5f4d22b3a9cdd80943d1776c2b8143b1b7",
+    "test-support/macos/Provider/Provider.entitlements": "85b5fb70841e96e16f128c23279cb6750a017898299ae393e6db7140fe258c8a",
+    "test-support/macos/Provider/Provider.swift": "a4461688fb1db932356ca91d1296a0377b842ee2d71c9f7e53992f921405ad9f",
+    "test-support/macos/Provider/main.swift": "c558ce196edfd509ef653e8e14cf454a8a61490d63c274694a8d082649996d80",
+    "test-support/macos/generate-project.py": "05c1b92ee13096d8c9626f259cf8ca7e2caf972bbf9959d843661e94c780b493",
+    "test-support/probes/dns_probe.c": "698ce582f30890d92c26c7e886d1873e4795b56ca734c7a899ada3a13be7836b",
+    "test-support/probes/socket_probe.c": "9590dab7eab6179890200def1627a2e768330b66fe327d45166610e2eecf86fe"
+  },
+  "proxy_variables_removed": true,
+  "packet_capture": "not_attempted; receiver-side observations only",
+  "git": "not required; source snapshots and hashes retained",
+  "installed_probe": {
+    "version": "6",
+    "binary_sha256": {
+      "Contents/MacOS/InVPNFeasibility": "2c0e37546ab5f29b60ed93d4ba531a94abdd26a3a8f0d3c1120dd3ebafaaa8f2",
+      "Contents/Library/SystemExtensions/jp.diverge.invpn.feasibility.proxy.systemextension/Contents/MacOS/jp.diverge.invpn.feasibility.proxy": "2dc3aa37fdf5302e380995df5f3f3b3b0284e39a96938821869e6ed18e93a1a6"
+    }
+  },
+  "binary_sha256": {
+    "socket-probe": "9352e6a27cdac2654a7d417241453ed55a0bf316f935fdda0ec12d21cfc14245"
+  },
+  "execution": "executed",
+  "finished_at": "2026-10-07T07:11:31.065734+00:00",
+  "raw_data": ".local/runs/feasibility/20261007T071122Z-F04-cc5ae6",
+  "raw_artifact_sha256": {
+    "manifest.json": "e31b9cf34c445fa5d0ccf6c940f457287ad3ecc0768599814410c280581cecd4",
+    "result.json": "0f569f0d28120cbf5ac60665dba61a670070e960b9c9a0b7caf1c99740d7284f",
+    "observations.json": "0fe7089a116f081a7c486873c500ce2823811539b4f0a0197e3f8e8e2259872c",
+    "cleanup.json": "2773583b17b549159accc47b9d33cf1b9114d5f5c3a6060259d7e21f8c6bc848",
+    "before-crash-events.json": "69cc0a510833ced07be144444313af9fd65a47db12f6cefdfef4c5b3b6643fd9",
+    "provider-after-crash.json": "51976b55718440f9a42846705bee6147366def286eec420cbbd91807c51c5e55",
+    "crash.json": "5fa5ba6d4112104263e19dbebc26a4b7eb1dc1563083c16bde01a583223cdb46",
+    "commands.json": "f5d3e2bb967df0f54641028045aec9c3bb7a83a7b15c09861c83160eb14eb682"
+  }
+}
